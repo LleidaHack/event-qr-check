@@ -1,5 +1,4 @@
 import 'package:event_qr_check/models/event.dart';
-import 'package:event_qr_check/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../../routes.dart';
