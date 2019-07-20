@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "335539218936",
+    "firebase_url": "https://hackeps-2019.firebaseio.com",
+    "project_id": "hackeps-2019",
+    "storage_bucket": "hackeps-2019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335539218936:android:34301cae132565fe",
+        "android_client_info": {
+          "package_name": "com.example.event_qr_check"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "335539218936-jhqk84fsfo87qonjga336cb5r1vk3060.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCicVYiMyh7mURYvPRzBeS2yISXjyD2hBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "335539218936-jhqk84fsfo87qonjga336cb5r1vk3060.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
