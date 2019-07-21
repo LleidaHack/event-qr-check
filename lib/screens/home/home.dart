@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:event_qr_check/models/event.dart';
 import 'package:event_qr_check/screens/home/widgets/event.dart';
-import 'package:event_qr_check/screens/home/widgets/spinner.dart';
 import 'package:event_qr_check/services/event_service.dart';
+import 'package:event_qr_check/widgets/spinner.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

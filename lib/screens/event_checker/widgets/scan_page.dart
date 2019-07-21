@@ -23,6 +23,7 @@ class ScanPage extends StatelessWidget {
             child: Icon(
               Icons.chevron_left,
               size: 60.0,
+              color: Colors.grey,
             ),
             onPressed: () => Navigator.of(context).pop(),
           )

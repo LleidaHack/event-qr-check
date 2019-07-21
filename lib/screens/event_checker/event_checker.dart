@@ -1,6 +1,7 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:event_qr_check/models/attendant.dart';
 import 'package:event_qr_check/models/event.dart';
+import 'package:event_qr_check/screens/event_checker/widgets/attendants_page.dart';
 import 'package:event_qr_check/screens/event_checker/widgets/bottom_bar.dart';
 import 'package:event_qr_check/screens/event_checker/widgets/corret_wrong_overlay.dart';
 import 'package:event_qr_check/screens/event_checker/widgets/scan_page.dart';
@@ -37,7 +38,7 @@ class _EventCheckerState extends State<EventChecker> {
         event: widget._event, 
         scanFunction: scan
       ),
-      Container(child: Text('Hello'),)
+      AttendantsPage(event: widget._event,)
     ];
     super.initState();
   }
