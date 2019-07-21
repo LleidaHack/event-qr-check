@@ -1,8 +1,11 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:event_qr_check/models/attendant.dart';
 import 'package:event_qr_check/models/event.dart';
+import 'package:event_qr_check/screens/event_checker/widgets/bottom_bar.dart';
 import 'package:event_qr_check/screens/event_checker/widgets/corret_wrong_overlay.dart';
+import 'package:event_qr_check/screens/event_checker/widgets/scan_page.dart';
 import 'package:event_qr_check/services/event_service.dart';
+import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../routes.dart';
@@ -23,26 +26,32 @@ class _EventCheckerState extends State<EventChecker> {
   bool showOverlay = false;
   CorrectWrongOverlay overlay;
 
+  List<Widget> pages;
+
+  int currentPage = 0;
+
+  @override
+  void initState() {
+    pages = [
+      ScanPage(
+        event: widget._event, 
+        scanFunction: scan
+      ),
+      Container(child: Text('Hello'),)
+    ];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       fit: StackFit.expand,
       children: <Widget>[
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: RaisedButton(
-                child: Text('Scan QR Code'),
-                onPressed: scan,
-                color: Colors.blue,
-                textColor: Colors.white,
-                splashColor: Colors.blueGrey,
-              ),
-            ),
-          ],
+        Scaffold(
+          body: pages[currentPage],
+          bottomNavigationBar: BottomBar(callback: (pos) {
+            setState(() { this.currentPage = pos; });
+          })
         ),
         showOverlay 
           ? this.overlay 
@@ -116,4 +125,5 @@ class _EventCheckerState extends State<EventChecker> {
       this.onOverlayClosed
     );
   }
+
 }
