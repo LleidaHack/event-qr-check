@@ -44,7 +44,6 @@ class _HomePageState extends State<HomePage> {
 
   EventButton _buildEventButton(DocumentSnapshot snapshot) {
     eventIdx++;    
-
     return EventButton(
       Event.fromSnapshot(snapshot), 
       // Cycle through colors

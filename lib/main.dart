@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 main() => runApp(
   MaterialApp(
     home: HomePage(),
+    theme: ThemeData(fontFamily: 'Montserrat'),
     routes: Router.routes,
   )
 );

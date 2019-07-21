@@ -8,8 +8,11 @@ class EventService {
   EventService(): 
     collection = Firestore.instance.collection('events');
 
+  CollectionReference eventAttendantsCollection(int eventId) => 
+     Firestore.instance.collection('events/$eventId/attendants');
+
   Future<bool> alreadyAssisted(Event event, Attendant attendant) async {
-    final collection = Firestore.instance.collection('/events/${event.id}/attendants');
+    final collection = eventAttendantsCollection(event.id);
     final docs = await collection
                   .where('email', isEqualTo: attendant.email)
                   .getDocuments();
@@ -17,8 +20,16 @@ class EventService {
   }
 
   Future<void> registerAttendant(Event event, Attendant attendant) async {
-    await Firestore.instance.collection('/events/${event.id}/attendants')
-      .document(attendant.email).setData(attendant.json());
+    final collection = eventAttendantsCollection(event.id);
+    await collection
+            .document(attendant.email)
+            .setData(attendant.json());
+  }
+
+  Future<List<Attendant>> getAttendants(Event event) async {
+    final collection = eventAttendantsCollection(event.id);
+    final documents = (await collection.getDocuments()).documents;
+    return documents.map((a) => Attendant.fromSnapshot((a)));
   }
 
   Stream<QuerySnapshot> snapshots() {
