@@ -53,63 +53,67 @@ class _EventCheckerState extends State<EventChecker> {
 
   Future scan() async {
     try {
-      String barcode = await BarcodeScanner.scan();
-      bool correct = await _checkAttendant(barcode);
-      this.overlay = CorrectWrongOverlay(
-        correct,
-        correct ? '' : 'Already assited... Cheater :)',
-        onOverlayClosed
-      );
+      // Scan QR code and get the encoded string
+      final String barcode = await BarcodeScanner.scan();
+
+      // Check attendant premissions
+      final correct = await _checkAttendant(barcode);
+      final message = correct ? '' : 'Already assited... Cheater :)';
+
+      // Show the overlay
+      this._setOverlay(correct, message);
       setState(() {
         this.showOverlay = true; 
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
+        this._setOverlay(false, 'Cammera Access Denied');
         setState(() {
-          this.overlay = CorrectWrongOverlay(
-            false,
-            'Cammera Access Denied',
-            this.onOverlayClosed
-          );
           this.showOverlay = true;
         });
       } else {
+        this._setOverlay(false, 'Unknown error: $e');
         setState(() { 
-          this.overlay = CorrectWrongOverlay(
-            false,
-            'Unknown error: $e',
-            this.onOverlayClosed
-          );
           this.showOverlay = true;
         });
       }
     } on FormatException {
       print('User has not scanned anything');
     } catch (e) {
+      this._setOverlay(false, 'Unknown error: $e');
       setState(() { 
-        this.overlay = CorrectWrongOverlay(
-          false,
-          'Unknown error: $e',
-          this.onOverlayClosed
-        );
         this.showOverlay = true;
       });    
     }
   }
 
   void onOverlayClosed() {
+    // Callback to close the overlay
     setState(() {
       showOverlay = false;
     });
   }
 
   Future<bool> _checkAttendant(String barcode) async {
-    Attendant attendant = Attendant.fromQR(barcode);
-    if (await widget._eventService.alreadyAssisted(widget._event, attendant)) {
+    // Check if the person who is trying to attend
+    // has already been there
+    final attendant = Attendant.fromQR(barcode);
+    final assisted = await widget._eventService.alreadyAssisted(widget._event, attendant); 
+    
+    // If already been there, forbid the access
+    if (assisted)
       return false;
-    } 
 
+    // Else register the attendant
     await widget._eventService.registerAttendant(widget._event, attendant);
     return true;
+  }
+
+  void _setOverlay(bool isCorrect, String message) {
+    this.overlay = CorrectWrongOverlay(
+      isCorrect,
+      message,
+      this.onOverlayClosed
+    );
   }
 }

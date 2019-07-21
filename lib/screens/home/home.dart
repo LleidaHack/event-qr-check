@@ -1,7 +1,7 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:event_qr_check/models/event.dart';
 import 'package:event_qr_check/screens/home/widgets/event.dart';
+import 'package:event_qr_check/screens/home/widgets/spinner.dart';
 import 'package:event_qr_check/services/event_service.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +31,8 @@ class _HomePageState extends State<HomePage> {
       builder: (context, snapshot) {
         eventIdx = -1;    
 
-        if (!snapshot.hasData) return LinearProgressIndicator();
+        if (!snapshot.hasData) 
+          return SpinnerLoader();
 
         return Column(
           children: snapshot.data.documents
@@ -43,9 +44,11 @@ class _HomePageState extends State<HomePage> {
 
   EventButton _buildEventButton(DocumentSnapshot snapshot) {
     eventIdx++;    
+
     return EventButton(
       Event.fromSnapshot(snapshot), 
-      widget.colors[eventIdx]
+      // Cycle through colors
+      widget.colors[eventIdx % widget.colors.length]
     );
   }
 }
