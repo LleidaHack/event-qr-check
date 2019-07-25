@@ -13,17 +13,30 @@ class EventService {
 
   Future<bool> alreadyAssisted(Event event, Attendant attendant) async {
     final collection = eventAttendantsCollection(event.id);
-    final docs = await collection
-                  .where('email', isEqualTo: attendant.email)
-                  .getDocuments();
-    return docs.documents.length > 0;
+    final attendantRef = collection.document(attendant.email);
+    final attendantSnapshot = await attendantRef.get();
+    if (!attendantSnapshot.exists) {
+      return false;
+    }
+
+    return attendantSnapshot.data['times'] == event.times;
   }
 
   Future<void> registerAttendant(Event event, Attendant attendant) async {
     final collection = eventAttendantsCollection(event.id);
-    await collection
-            .document(attendant.email)
-            .setData(attendant.json());
+    final attendantRef = collection.document(attendant.email);
+    final attendantSnapshot = await attendantRef.get();
+    if (attendantSnapshot.exists) {
+      // Update time
+      await attendantRef
+            .updateData({'times': attendantSnapshot.data['times'] + 1});
+    } else {
+      // Insert attendant for the first time
+      Map<String, dynamic> attendantMap = attendant.json();
+      attendantMap['times'] = 1;
+      await attendantRef.setData(attendantMap);
+    }
+
   }
 
   Future<List<Attendant>> getAttendants(Event event) async {
