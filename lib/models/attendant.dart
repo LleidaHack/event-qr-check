@@ -1,3 +1,4 @@
+import 'dart:convert' as convert;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Attendant {
@@ -9,11 +10,11 @@ class Attendant {
   Attendant(this.name, this.email, this.times, {this.reference});
 
   factory Attendant.fromQR(String qrContent) {
-    // final attendant = json.decode(qrContent);
-    final attendant = {
-      'name': 'Guillem',
-      'email': 'guillem@mail.com'
-    };
+    final attendant = convert.json.decode(qrContent.replaceAll("&#34;", '"'));
+    // final attendant = {
+    //   'name': 'Guillem',
+    //   'email': 'guillem@mail.com'
+    // };
 
     return Attendant(attendant['name'], attendant['email'], 1);
   }

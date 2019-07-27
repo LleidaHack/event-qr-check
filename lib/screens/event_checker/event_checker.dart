@@ -75,8 +75,11 @@ class _EventCheckerState extends State<EventChecker> {
        loading = true; 
       });
       // Check attendant premissions
-      final correct = await _checkAttendant(barcode);
-      final message = correct ? '' : 'Already assited... Cheater :)';
+      final attendant = Attendant.fromQR(barcode);
+      final correct = await _checkAttendant(attendant);
+      final message = correct 
+        ? '${attendant.name}' 
+        : 'Already assited... Cheater :)';
 
       // Show the overlay
       this._setOverlay(correct, message);
@@ -98,8 +101,9 @@ class _EventCheckerState extends State<EventChecker> {
           this.showOverlay = true;
         });
       }
-    } on FormatException {
+    } on FormatException catch(e) {
       print('User has not scanned anything');
+      print('$e');
     } catch (e) {
       this._setOverlay(false, 'Unknown error: $e');
       setState(() { 
@@ -116,10 +120,9 @@ class _EventCheckerState extends State<EventChecker> {
     });
   }
 
-  Future<bool> _checkAttendant(String barcode) async {
+  Future<bool> _checkAttendant(Attendant attendant) async {
     // Check if the person who is trying to attend
     // has already been there
-    final attendant = Attendant.fromQR(barcode);
     final assisted = await widget._eventService.alreadyAssisted(widget._event, attendant); 
     
     // If already been there, forbid the access
