@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:event_qr_check/models/attendant.dart';
 
 class Event {
   final int id;

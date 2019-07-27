@@ -32,9 +32,7 @@ class EventService {
             .updateData({'times': attendantSnapshot.data['times'] + 1});
     } else {
       // Insert attendant for the first time
-      Map<String, dynamic> attendantMap = attendant.json();
-      attendantMap['times'] = 1;
-      await attendantRef.setData(attendantMap);
+      await attendantRef.setData(attendant.json());
     }
 
   }

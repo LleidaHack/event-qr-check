@@ -4,9 +4,9 @@ import 'package:event_qr_check/models/event.dart';
 import 'package:event_qr_check/screens/event_checker/widgets/attendants_page.dart';
 import 'package:event_qr_check/screens/event_checker/widgets/bottom_bar.dart';
 import 'package:event_qr_check/screens/event_checker/widgets/corret_wrong_overlay.dart';
+import 'package:event_qr_check/screens/event_checker/widgets/loading_overlay.dart';
 import 'package:event_qr_check/screens/event_checker/widgets/scan_page.dart';
 import 'package:event_qr_check/services/event_service.dart';
-import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../routes.dart';
@@ -27,6 +27,8 @@ class _EventCheckerState extends State<EventChecker> {
   bool showOverlay = false;
   CorrectWrongOverlay overlay;
 
+  bool loading = false;
+  
   List<Widget> pages;
 
   int currentPage = 0;
@@ -56,6 +58,9 @@ class _EventCheckerState extends State<EventChecker> {
         ),
         showOverlay 
           ? this.overlay 
+          : Container(),
+        loading
+          ? LoadingOverlay()
           : Container() 
       ],
     );
@@ -66,6 +71,9 @@ class _EventCheckerState extends State<EventChecker> {
       // Scan QR code and get the encoded string
       final String barcode = await BarcodeScanner.scan();
 
+      setState(() {
+       loading = true; 
+      });
       // Check attendant premissions
       final correct = await _checkAttendant(barcode);
       final message = correct ? '' : 'Already assited... Cheater :)';
@@ -73,17 +81,20 @@ class _EventCheckerState extends State<EventChecker> {
       // Show the overlay
       this._setOverlay(correct, message);
       setState(() {
+        this.loading = false;
         this.showOverlay = true; 
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         this._setOverlay(false, 'Cammera Access Denied');
         setState(() {
+          this.loading = false;
           this.showOverlay = true;
         });
       } else {
         this._setOverlay(false, 'Unknown error: $e');
         setState(() { 
+          this.loading = false;
           this.showOverlay = true;
         });
       }
@@ -92,6 +103,7 @@ class _EventCheckerState extends State<EventChecker> {
     } catch (e) {
       this._setOverlay(false, 'Unknown error: $e');
       setState(() { 
+        this.loading = false;
         this.showOverlay = true;
       });    
     }
