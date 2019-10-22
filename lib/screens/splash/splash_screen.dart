@@ -16,8 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() { 
     super.initState();
     Timer(Duration(seconds: 2), () {
-      Navigator.pop(context);
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         FadingRoute(builder: (context) => HomePage()),
       );
