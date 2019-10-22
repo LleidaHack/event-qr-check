@@ -26,19 +26,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: EventService().snapshots(),
-      builder: (context, snapshot) {
-        eventIdx = -1;    
+    return SafeArea(
+      child: StreamBuilder<QuerySnapshot>(
+        stream: EventService().snapshots(),
+        builder: (context, snapshot) {
+          eventIdx = -1;
 
-        if (!snapshot.hasData) 
-          return SpinnerLoader();
+          if (!snapshot.hasData)
+            return SpinnerLoader();
 
-        return Column(
-          children: snapshot.data.documents
-                      .map(_buildEventButton).toList()
-        );
-      }
+          return Column(
+            children: snapshot.data.documents
+                        .map(_buildEventButton).toList()
+          );
+        }
+      ),
     );
   }
 
