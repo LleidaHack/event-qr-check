@@ -17,13 +17,24 @@ class AttendantsPage extends StatefulWidget {
 class _AttendantsPageState extends State<AttendantsPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(child: Column(
+    return SafeArea(child: Column(
       children: <Widget>[
+        Align(
+            alignment: Alignment.topLeft,
+            child: FlatButton(
+              child: Icon(
+                Icons.chevron_left,
+                size: 60.0,
+                color: Colors.grey,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+        ),
         Padding(
           padding: EdgeInsets.all(40.0),
           child: Icon(
-            Icons.person_outline, 
-            size: 150.0, 
+            Icons.person_outline,
+            size: 150.0,
             color: Colors.grey,
           ),
         ),
@@ -32,7 +43,7 @@ class _AttendantsPageState extends State<AttendantsPage> {
                     .eventAttendantsCollection(widget.event.id)
                     .snapshots(),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) 
+            if (!snapshot.hasData)
               return SpinnerLoader();
             return Expanded(
               child: GlowingOverscrollIndicator(

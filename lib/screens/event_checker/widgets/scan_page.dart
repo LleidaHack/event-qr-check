@@ -15,7 +15,7 @@ class ScanPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Align(
@@ -41,7 +41,7 @@ class ScanPage extends StatelessWidget {
             style: TextStyle(fontSize: 80.0),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 50.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 80.0),
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5.0))
