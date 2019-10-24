@@ -29,19 +29,17 @@ class ScanPage extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
             )
           ),
-          Padding(padding: EdgeInsets.all(20.0),),
           Icon(
             Icons.center_focus_weak,
             size: 180.0,
           ),
-          Padding(padding: EdgeInsets.all(30.0),),
           Text(
             this.event.name,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 80.0),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 80.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 60.0),
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5.0))

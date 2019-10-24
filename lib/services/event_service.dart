@@ -13,7 +13,7 @@ class EventService {
 
   Future<bool> alreadyAssisted(Event event, Attendant attendant) async {
     final collection = eventAttendantsCollection(event.id);
-    final attendantRef = collection.document(attendant.email);
+    final attendantRef = collection.document(attendant.documentID);
     final attendantSnapshot = await attendantRef.get();
     if (!attendantSnapshot.exists) {
       return false;
@@ -24,7 +24,7 @@ class EventService {
 
   Future<void> registerAttendant(Event event, Attendant attendant) async {
     final collection = eventAttendantsCollection(event.id);
-    final attendantRef = collection.document(attendant.email);
+    final attendantRef = collection.document(attendant.documentID);
     final attendantSnapshot = await attendantRef.get();
     if (attendantSnapshot.exists) {
       // Update time
