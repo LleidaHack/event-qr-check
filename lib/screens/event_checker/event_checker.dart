@@ -72,6 +72,8 @@ class _EventCheckerState extends State<EventChecker> {
     try {
       // Scan QR code and get the encoded string
       final String barcode = await BarcodeScanner.scan();
+      String message = "User not found ¯\\_(ツ)_/¯";
+      bool correct = false;
 
       setState(() {
         loading = true;
@@ -79,11 +81,12 @@ class _EventCheckerState extends State<EventChecker> {
       // Check attendant premissions
       var userSnapshot =
           await widget._userService.getUserSnapshotFromQR(barcode);
-      final attendant = Attendant.fromSnapshot(userSnapshot);
-      final correct = await _checkAttendant(attendant);
-      final message =
-          correct ? '${attendant.nickname}' : 'Already assited... Cheater :)';
-
+      if (userSnapshot.exists) {
+        final attendant = Attendant.fromSnapshot(userSnapshot);
+        correct = await _checkAttendant(attendant);
+        message =
+            correct ? '${attendant.nickname}' : 'Already assited... Cheater :)';
+      }
       // Show the overlay
       this._setOverlay(correct, message);
       setState(() {
