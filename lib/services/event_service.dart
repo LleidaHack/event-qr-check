@@ -19,7 +19,7 @@ class EventService {
       return false;
     }
 
-    return attendantSnapshot.data['times'] == event.times;
+    return attendantSnapshot.data['times'] >= event.times;
   }
 
   Future<void> registerAttendant(Event event, Attendant attendant) async {
